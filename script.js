@@ -352,6 +352,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Check for reset parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('reset') === 'true') {
+        localStorage.removeItem('fastener_database');
+        localStorage.removeItem('adminData');
+        console.log('Cache cleared, reloading...');
+        // Remove the parameter from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        // Force reload data
+        allCompanies = loadCompaniesData();
+        displayCompanies(allCompanies);
+        displayAllProducts(allCompanies);
+    }
+
     // Listen for admin data updates
     window.addEventListener('adminDataUpdated', function(event) {
         console.log('Admin data updated, refreshing website...');

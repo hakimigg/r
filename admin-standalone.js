@@ -100,27 +100,43 @@ class StandaloneAdmin {
     }
 
     handleLogin() {
-        // Directly get elements by ID
-        const username = document.getElementById('username')?.value.trim();
-        const password = document.getElementById('password')?.value;
-        const rememberMe = document.getElementById('rememberMe')?.checked;
-        
-        console.log('Login attempt with:', { username, password });
-        
-        // Simple validation
-        if (!username || !password) {
-            this.showError('Veuillez remplir tous les champs');
-            return;
-        }
-        
-        // Check credentials
-        if (username === this.credentials.username && password === this.credentials.password) {
-            console.log('Login successful');
-            this.createSession(rememberMe);
-            this.showAdminPanel();
-        } else {
-            console.log('Login failed - invalid credentials');
-            this.showError('Nom d\'utilisateur ou mot de passe invalide');
+        try {
+            console.log('handleLogin called');
+            
+            // Directly get elements by ID
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const rememberMe = document.getElementById('rememberMe')?.checked;
+            
+            if (!usernameInput || !passwordInput) {
+                console.error('Username or password input not found');
+                this.showError('Erreur: Champs de connexion introuvables');
+                return;
+            }
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            
+            console.log('Login attempt with:', { username, password });
+            
+            // Simple validation
+            if (!username || !password) {
+                this.showError('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            // Check credentials
+            if (username === this.credentials.username && password === this.credentials.password) {
+                console.log('Login successful');
+                this.createSession(rememberMe);
+                this.showAdminPanel();
+            } else {
+                console.log('Login failed - invalid credentials');
+                this.showError('Nom d\'utilisateur ou mot de passe invalide');
+            }
+        } catch (error) {
+            console.error('Error in handleLogin:', error);
+            this.showError('Une erreur est survenue lors de la connexion');
         }
     }
 
@@ -491,28 +507,38 @@ class StandaloneAdmin {
     }
 
     addProduct(formData) {
-        const companyIndex = this.companies.findIndex(c => c.id === formData.companyId);
-        if (companyIndex !== -1) {
-            const newProduct = {
-                id: this.generateId(),
-                name: formData.name,
-                category: formData.category,
-                price: 'da', // Always set price to 'da'
-                stock: 0,
-                description: '', // No longer using description
-                specifications: '', // No longer using specifications
-                createdAt: new Date().toISOString()
-            };
-
-            if (!formData.name || !formData.category || !formData.companyId) {
+        try {
+            if (!formData || !formData.companyId) {
+                throw new Error('Données du produit ou ID de la société manquants');
+            }
+            
+            const companyIndex = this.companies.findIndex(c => c.id === formData.companyId);
+            if (companyIndex === -1) {
+                throw new Error('Société non trouvée');
+            }
+            
+            if (!formData.name || !formData.category) {
                 customAlerts.showAlert('Veuillez remplir tous les champs obligatoires.', 'Erreur de validation', 'warning');
                 return;
             }
             
-            // Add the product to the company
+            const newProduct = {
+                id: this.generateId(),
+                name: formData.name,
+                category: formData.category,
+                price: 'da',
+                stock: 0,
+                description: '',
+                specifications: '',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Initialize products array if it doesn't exist
             if (!this.companies[companyIndex].products) {
                 this.companies[companyIndex].products = [];
             }
+            
+            // Add the product
             this.companies[companyIndex].products.push(newProduct);
             this.saveData();
             
@@ -521,6 +547,14 @@ class StandaloneAdmin {
             this.updateStats();
             this.populateCompanySelect();
             customAlerts.success('Produit ajouté avec succès !');
+            
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout du produit:', error);
+            customAlerts.showAlert(
+                'Une erreur est survenue lors de l\'ajout du produit.',
+                'Erreur',
+                'error'
+            );
         }
     }
 
@@ -618,16 +652,22 @@ class StandaloneAdmin {
     }
 }
 
+// Initialize the admin panel when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Check for logout parameter in URL
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('logout') === 'true') {
         localStorage.removeItem('adminSession');
-        // Remove the parameter from URL
-        window.history.replaceState({}, document.title, window.location.pathname);
     }
     
-    window.admin = new StandaloneAdmin();
+    // Create and initialize the admin instance
+    const admin = new StandaloneAdmin();
+    
+    // Make it available globally for HTML event handlers
+    window.admin = admin;
+    
+    // Debug log
+    console.log('Admin panel initialized');
 });
 
 // Global function wrappers for HTML onclick events

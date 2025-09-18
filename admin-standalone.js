@@ -72,12 +72,16 @@ class StandaloneAdmin {
     }
 
     checkLoginStatus() {
-        const session = localStorage.getItem('adminSession');
-        if (session) {
-            this.showAdminPanel();
-        } else {
-            this.showLoginPanel();
-        }
+        // Always show login panel first for testing
+        this.showLoginPanel();
+        
+        // Uncomment below for normal session behavior
+        // const session = localStorage.getItem('adminSession');
+        // if (session) {
+        //     this.showAdminPanel();
+        // } else {
+        //     this.showLoginPanel();
+        // }
     }
 
     handleLogin() {
@@ -742,6 +746,14 @@ class StandaloneAdmin {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Check for logout parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('logout') === 'true') {
+        localStorage.removeItem('adminSession');
+        // Remove the parameter from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
     window.admin = new StandaloneAdmin();
 });
 

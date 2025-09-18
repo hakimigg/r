@@ -1,4 +1,16 @@
 function loadCompaniesData() {
+    // Try to get data from the database system first
+    const fastenerData = localStorage.getItem('fastener_database');
+    if (fastenerData) {
+        try {
+            const data = JSON.parse(fastenerData);
+            return data.companies || getFallbackData();
+        } catch (error) {
+            console.error('Error loading fastener database:', error);
+        }
+    }
+    
+    // Fallback to old admin data format
     const adminData = localStorage.getItem('adminData');
     if (adminData) {
         try {
@@ -9,6 +21,14 @@ function loadCompaniesData() {
             return getFallbackData();
         }
     }
+    
+    // Initialize database if no data exists
+    if (typeof Database !== 'undefined') {
+        const db = new Database();
+        const dbData = db.getAllData();
+        return dbData.companies || getFallbackData();
+    }
+    
     return getFallbackData();
 }
 

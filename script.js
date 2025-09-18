@@ -248,15 +248,27 @@ function clearSearch() {
 }
 
 function openProductModal(productId) {
+    console.log('Opening modal for product:', productId);
     const product = getAllProducts().find(p => p.id === productId);
-    if (!product) return;
+    console.log('Found product:', product);
+    if (!product) {
+        console.log('Product not found!');
+        return;
+    }
     
     document.getElementById('modalProductName').textContent = product.name;
     document.getElementById('modalProductCategory').textContent = product.category;
     document.getElementById('modalProductCompany').textContent = product.company;
     
-    const price = product.price ? product.price.toFixed(2) : (Math.random() * 50 + 5).toFixed(2);
-    document.getElementById('modalProductPrice').textContent = `$${price}`;
+    let price;
+    if (typeof product.price === 'number') {
+        price = `$${product.price.toFixed(2)}`;
+    } else if (product.price) {
+        price = product.price; // Use the string value directly (like "da")
+    } else {
+        price = `$${(Math.random() * 50 + 5).toFixed(2)}`;
+    }
+    document.getElementById('modalProductPrice').textContent = price;
     
     const descriptionEl = document.getElementById('modalProductDescription');
     const specificationsEl = document.getElementById('modalProductSpecifications');

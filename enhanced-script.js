@@ -38,9 +38,9 @@ function loadFeaturedProducts() {
             <div class="featured-content">
                 <h3 class="featured-title">${product.name}</h3>
                 <p class="featured-company">${product.company}</p>
-                <div class="featured-price">$${product.price.toFixed(2)}</div>
+                <div class="featured-price">${typeof product.price === 'number' ? '$' + product.price.toFixed(2) : product.price}</div>
                 <p class="featured-description">${product.description}</p>
-                <button class="featured-btn" onclick="openProductModal('${product.id}', '${product.name}', '${product.company}', ${product.price}, '${product.description}')">
+                <button class="featured-btn" onclick="openProductModal('${product.id}')">
                     View Details
                 </button>
             </div>

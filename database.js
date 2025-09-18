@@ -6,7 +6,7 @@ class Database {
 
     init() {
         const existingData = localStorage.getItem(this.storageKey);
-        const currentVersion = '2.1'; // Updated version to force reset with new prices
+        const currentVersion = '2.2'; // Updated version to force reset with simplified products
         
         let shouldReset = false;
         if (existingData) {

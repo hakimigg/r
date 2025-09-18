@@ -305,7 +305,7 @@ class StandaloneAdmin {
                 <td>${product.name}</td>
                 <td>${product.category}</td>
                 <td>${product.companyName}</td>
-                <td>$${parseFloat(product.price).toFixed(2)}</td>
+                <td>${typeof product.price === 'number' ? '$' + product.price.toFixed(2) : product.price}</td>
                 <td>
                     <div class="action-buttons">
                         <button class="edit-btn" onclick="admin.editProduct('${product.id}')" title="Edit">

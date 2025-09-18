@@ -6,7 +6,21 @@ class Database {
 
     init() {
         const existingData = localStorage.getItem(this.storageKey);
-        if (!existingData) {
+        const currentVersion = '2.0'; // Updated version to force reset
+        
+        let shouldReset = false;
+        if (existingData) {
+            try {
+                const data = JSON.parse(existingData);
+                if (!data.version || data.version !== currentVersion) {
+                    shouldReset = true;
+                }
+            } catch (e) {
+                shouldReset = true;
+            }
+        }
+        
+        if (!existingData || shouldReset) {
             const defaultData = {
                 companies: [
                     {
@@ -85,6 +99,7 @@ class Database {
                         ]
                     }
                 ],
+                version: currentVersion,
                 lastUpdated: new Date().toISOString()
             };
             this.saveData(defaultData);

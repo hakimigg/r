@@ -757,6 +757,13 @@ document.addEventListener('DOMContentLoaded', function() {
     window.admin = new StandaloneAdmin();
 });
 
+// Global function wrappers for HTML onclick events
+function logout() {
+    if (window.admin) {
+        window.admin.logout();
+    }
+}
+
 function showTab(tabName) {
     if (window.admin) {
         window.admin.showTab(tabName);
@@ -766,6 +773,60 @@ function showTab(tabName) {
 function openCompanyModal() {
     if (window.admin) {
         window.admin.openCompanyModal();
+    }
+}
+
+function closeCompanyModal() {
+    if (window.admin) {
+        window.admin.closeCompanyModal();
+    }
+}
+
+function openProductModal() {
+    if (window.admin) {
+        window.admin.openProductModal();
+    }
+}
+
+function closeProductModal() {
+    if (window.admin) {
+        window.admin.closeProductModal();
+    }
+}
+
+function openFeaturedModal() {
+    if (window.admin) {
+        window.admin.openFeaturedModal();
+    }
+}
+
+function closeFeaturedModal() {
+    if (window.admin) {
+        window.admin.closeFeaturedModal();
+    }
+}
+
+function exportData() {
+    if (window.admin) {
+        window.admin.exportData();
+    }
+}
+
+function importData(event) {
+    if (window.admin) {
+        window.admin.importData(event);
+    }
+}
+
+function resetData() {
+    if (window.admin) {
+        window.admin.resetData();
+    }
+}
+
+function saveFeaturedProduct(event) {
+    if (window.admin) {
+        window.admin.saveFeaturedProduct(event);
     }
 }
 

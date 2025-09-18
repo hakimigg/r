@@ -19,7 +19,15 @@ function loadCompaniesData() {
         try {
             const data = JSON.parse(fastenerData);
             console.log('Found fastener_database in localStorage:', data);
-            return data.companies || getFallbackData();
+            console.log('Companies array:', data.companies);
+            console.log('Number of companies:', data.companies ? data.companies.length : 0);
+            if (data.companies && data.companies.length > 0) {
+                console.log('First company:', data.companies[0]);
+                return data.companies;
+            } else {
+                console.log('No companies in data, using fallback');
+                return getFallbackData();
+            }
         } catch (error) {
             console.error('Error loading fastener database:', error);
         }

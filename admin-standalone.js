@@ -4,12 +4,13 @@ class StandaloneAdmin {
             username: 'admin',
             password: 'admin123'
         };
-        this.storageKey = 'adminData';
+        this.storageKey = 'fastener_database'; // Use same key as website
         this.isLoggedIn = false;
         this.currentTab = 'companies';
         this.editingCompany = null;
         this.editingProduct = null;
         this.editingFeatured = null;
+        this.database = null;
         this.init();
     }
 
@@ -143,87 +144,59 @@ class StandaloneAdmin {
     }
 
     loadData() {
-        const savedData = localStorage.getItem(this.storageKey);
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            this.companies = data.companies || this.getDefaultCompanies();
+        // Initialize database if not exists
+        if (typeof Database !== 'undefined') {
+            this.database = new Database();
+            const data = this.database.getAllData();
+            this.companies = data.companies || [];
         } else {
-            this.companies = this.getDefaultCompanies();
-            this.saveData();
+            // Fallback to direct localStorage access
+            const savedData = localStorage.getItem(this.storageKey);
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                this.companies = data.companies || [];
+            } else {
+                // Initialize with empty array - database will handle defaults
+                this.companies = [];
+            }
         }
     }
 
     saveData() {
-        const data = {
-            companies: this.companies,
-            lastUpdated: new Date().toISOString()
-        };
-        localStorage.setItem(this.storageKey, JSON.stringify(data));
+        if (this.database) {
+            // Use database methods to save
+            const data = {
+                companies: this.companies,
+                lastUpdated: new Date().toISOString()
+            };
+            localStorage.setItem(this.storageKey, JSON.stringify(data));
+        } else {
+            // Fallback to direct localStorage
+            const data = {
+                companies: this.companies,
+                lastUpdated: new Date().toISOString()
+            };
+            localStorage.setItem(this.storageKey, JSON.stringify(data));
+        }
+        
+        // Trigger data update event for website synchronization
+        this.triggerDataUpdate();
+    }
+    
+    triggerDataUpdate() {
+        // Dispatch custom event to notify website of data changes
+        window.dispatchEvent(new CustomEvent('adminDataUpdated', {
+            detail: { companies: this.companies }
+        }));
+        
+        // Also trigger storage event for cross-tab communication
+        window.dispatchEvent(new StorageEvent('storage', {
+            key: this.storageKey,
+            newValue: JSON.stringify({ companies: this.companies }),
+            storageArea: localStorage
+        }));
     }
 
-    getDefaultCompanies() {
-        return [
-            {
-                id: '1',
-                name: 'TechBolt Solutions',
-                image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8dGV4dCB4PSIxNTAiIHk9IjEwNSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJvbHQgU29sdXRpb25zPC90ZXh0Pgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGRjZCMzUiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRjc5MzFFIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+',
-                products: [
-                    { 
-                        id: 'p1', 
-                        name: 'Hex Bolts M8', 
-                        category: 'Bolts', 
-                        company: 'TechBolt Solutions',
-                        price: 12.99,
-                        description: 'High-quality hex bolts made from stainless steel',
-                        specifications: 'Material: Stainless Steel, Size: M8, Length: 50mm, Thread: Metric'
-                    },
-                    { 
-                        id: 'd1', 
-                        name: 'Socket Screws', 
-                        category: 'Screws', 
-                        company: 'TechBolt Solutions',
-                        price: 8.50,
-                        description: 'Precision socket head cap screws for industrial use',
-                        specifications: 'Material: Alloy Steel, Size: M6, Length: 30mm, Head Type: Socket'
-                    },
-                    { 
-                        id: 'c1', 
-                        name: 'Washers Set', 
-                        category: 'Washers', 
-                        company: 'TechBolt Solutions',
-                        price: 15.75,
-                        description: 'Complete set of flat and lock washers',
-                        specifications: 'Material: Steel, Sizes: M6-M12, Quantity: 100 pieces'
-                    }
-                ]
-            },
-            {
-                id: '2',
-                name: 'Premium Hardware Co',
-                image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8dGV4dCB4PSIxNTAiIHk9IjEwNSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlByZW1pdW0gSGFyZHdhcmU8L3RleHQ+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzJFODZBQiIvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNBMjNCNzIiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4=',
-                products: [
-                    { 
-                        id: 'x1', 
-                        name: 'Stainless Bolts', 
-                        category: 'Bolts', 
-                        company: 'Premium Hardware Co',
-                        price: 18.99,
-                        description: 'Corrosion-resistant stainless steel bolts',
-                        specifications: 'Material: 316 Stainless Steel, Size: M10, Length: 60mm'
-                    },
-                    { 
-                        id: 'y1', 
-                        name: 'Wing Nuts', 
-                        category: 'Nuts', 
-                        company: 'Premium Hardware Co',
-                        price: 6.25,
-                        description: 'Easy-grip wing nuts for quick assembly',
-                        specifications: 'Material: Zinc Plated Steel, Size: M8, Thread: Metric'
-                    }
-                ]
-            }
-        ];
-    }
 
     updateStats() {
         const totalCompanies = this.companies.length;
@@ -749,7 +722,15 @@ class StandaloneAdmin {
     resetData() {
         customAlerts.showConfirm('Are you sure you want to reset all data? This action cannot be undone.', 'Reset All Data', 'danger').then((confirmed) => {
             if (confirmed) {
-                this.companies = this.getDefaultCompanies();
+                // Clear localStorage and reinitialize database
+                localStorage.removeItem(this.storageKey);
+                if (this.database) {
+                    this.database = new Database();
+                    const data = this.database.getAllData();
+                    this.companies = data.companies || [];
+                } else {
+                    this.companies = [];
+                }
                 this.saveData();
                 this.renderCompanies();
                 this.renderProducts();

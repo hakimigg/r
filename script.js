@@ -351,4 +351,24 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Clicked:', this.textContent);
         });
     });
+    
+    // Listen for admin data updates
+    window.addEventListener('adminDataUpdated', function(event) {
+        console.log('Admin data updated, refreshing website...');
+        // Reload companies data and refresh display
+        allCompanies = loadCompaniesData();
+        displayCompanies(allCompanies);
+        displayAllProducts(allCompanies);
+    });
+    
+    // Listen for localStorage changes (cross-tab communication)
+    window.addEventListener('storage', function(event) {
+        if (event.key === 'fastener_database' || event.key === 'adminData') {
+            console.log('Database updated in another tab, refreshing...');
+            // Reload companies data and refresh display
+            allCompanies = loadCompaniesData();
+            displayCompanies(allCompanies);
+            displayAllProducts(allCompanies);
+        }
+    });
 });

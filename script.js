@@ -271,16 +271,36 @@ function openProductModal(productId) {
     document.getElementById('modalProductPrice').textContent = price;
     
     const descriptionEl = document.getElementById('modalProductDescription');
-    const specificationsEl = document.getElementById('modalProductSpecifications');
+    const specificationsEl = document.getElementById('modalProductSpecs'); // Changed ID to match HTML
     
-    if (descriptionEl && product.description) {
-        descriptionEl.textContent = product.description;
-        descriptionEl.style.display = 'block';
+    if (descriptionEl) {
+        if (product.description) {
+            descriptionEl.textContent = product.description;
+            descriptionEl.style.display = 'block';
+        } else {
+            descriptionEl.style.display = 'none';
+        }
     }
     
-    if (specificationsEl && product.specifications) {
-        specificationsEl.textContent = product.specifications;
-        specificationsEl.style.display = 'block';
+    if (specificationsEl) {
+        // Create specifications list if it doesn't exist
+        if (product.specifications) {
+            // If specifications is a string, convert it to an array
+            const specs = typeof product.specifications === 'string' 
+                ? product.specifications.split(',').map(s => s.trim())
+                : (Array.isArray(product.specifications) ? product.specifications : []);
+            
+            if (specs.length > 0) {
+                specificationsEl.innerHTML = specs.map(spec => 
+                    `<li>${spec}</li>`
+                ).join('');
+                specificationsEl.style.display = 'block';
+            } else {
+                specificationsEl.style.display = 'none';
+            }
+        } else {
+            specificationsEl.style.display = 'none';
+        }
     }
     
     const modal = document.getElementById('productModal');

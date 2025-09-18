@@ -1,9 +1,24 @@
 function loadCompaniesData() {
-    // Try to get data from the database system first
+    console.log('Loading companies data...');
+    
+    // Initialize database first to ensure default data is loaded
+    if (typeof Database !== 'undefined') {
+        console.log('Database class available, initializing...');
+        const db = new Database();
+        const dbData = db.getData();
+        console.log('Database data:', dbData);
+        if (dbData && dbData.companies && dbData.companies.length > 0) {
+            console.log('Found', dbData.companies.length, 'companies in database');
+            return dbData.companies;
+        }
+    }
+    
+    // Try to get data from the database system
     const fastenerData = localStorage.getItem('fastener_database');
     if (fastenerData) {
         try {
             const data = JSON.parse(fastenerData);
+            console.log('Found fastener_database in localStorage:', data);
             return data.companies || getFallbackData();
         } catch (error) {
             console.error('Error loading fastener database:', error);
@@ -15,20 +30,14 @@ function loadCompaniesData() {
     if (adminData) {
         try {
             const data = JSON.parse(adminData);
+            console.log('Found adminData in localStorage:', data);
             return data.companies || getFallbackData();
         } catch (error) {
             console.error('Error loading admin data:', error);
-            return getFallbackData();
         }
     }
     
-    // Initialize database if no data exists
-    if (typeof Database !== 'undefined') {
-        const db = new Database();
-        const dbData = db.getAllData();
-        return dbData.companies || getFallbackData();
-    }
-    
+    console.log('No data found, using fallback');
     return getFallbackData();
 }
 

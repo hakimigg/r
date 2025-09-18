@@ -507,14 +507,21 @@ class StandaloneAdmin {
             if (!formData.name || !formData.category || !formData.companyId) {
                 customAlerts.showAlert('Veuillez remplir tous les champs obligatoires.', 'Erreur de validation', 'warning');
                 return;
-                    this.renderCompanies();
-                    this.renderProducts();
-                    this.updateStats();
-                    this.populateCompanySelect();
-                    customAlerts.success('Société supprimée avec succès !');
-                }
             }
-        });
+            
+            // Add the product to the company
+            if (!this.companies[companyIndex].products) {
+                this.companies[companyIndex].products = [];
+            }
+            this.companies[companyIndex].products.push(newProduct);
+            this.saveData();
+            
+            // Update UI
+            this.renderProducts();
+            this.updateStats();
+            this.populateCompanySelect();
+            customAlerts.success('Produit ajouté avec succès !');
+        }
     }
 
     getProduct(id) {

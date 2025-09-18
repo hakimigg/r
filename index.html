@@ -229,6 +229,12 @@
         </div>
     </div>
 
+    <script>
+        // Handle admin routing
+        if (window.location.hash === '#admin' || window.location.pathname.includes('/admin')) {
+            window.location.href = 'admin.html';
+        }
+    </script>
     <script src="script.js"></script>
     <script src="enhanced-script.js"></script>
 </body>

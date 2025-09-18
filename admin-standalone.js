@@ -147,7 +147,7 @@ class StandaloneAdmin {
         // Initialize database if not exists
         if (typeof Database !== 'undefined') {
             this.database = new Database();
-            const data = this.database.getAllData();
+            const data = this.database.getData();
             this.companies = data.companies || [];
         } else {
             // Fallback to direct localStorage access
@@ -163,19 +163,16 @@ class StandaloneAdmin {
     }
 
     saveData() {
+        const data = {
+            companies: this.companies,
+            lastUpdated: new Date().toISOString()
+        };
+        
         if (this.database) {
             // Use database methods to save
-            const data = {
-                companies: this.companies,
-                lastUpdated: new Date().toISOString()
-            };
-            localStorage.setItem(this.storageKey, JSON.stringify(data));
+            this.database.saveData(data);
         } else {
             // Fallback to direct localStorage
-            const data = {
-                companies: this.companies,
-                lastUpdated: new Date().toISOString()
-            };
             localStorage.setItem(this.storageKey, JSON.stringify(data));
         }
         
@@ -723,12 +720,12 @@ class StandaloneAdmin {
         customAlerts.showConfirm('Are you sure you want to reset all data? This action cannot be undone.', 'Reset All Data', 'danger').then((confirmed) => {
             if (confirmed) {
                 // Clear localStorage and reinitialize database
-                localStorage.removeItem(this.storageKey);
                 if (this.database) {
-                    this.database = new Database();
-                    const data = this.database.getAllData();
+                    this.database.clearDatabase();
+                    const data = this.database.getData();
                     this.companies = data.companies || [];
                 } else {
+                    localStorage.removeItem(this.storageKey);
                     this.companies = [];
                 }
                 this.saveData();

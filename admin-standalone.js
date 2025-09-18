@@ -305,7 +305,7 @@ class StandaloneAdmin {
                 <td>${product.name}</td>
                 <td>${product.category}</td>
                 <td>${product.companyName}</td>
-                <td>${typeof product.price === 'number' ? '$' + product.price.toFixed(2) : product.price}</td>
+                <td>da</td>
                 <td>
                     <div class="action-buttons">
                         <button class="edit-btn" onclick="admin.editProduct('${product.id}')" title="Edit">
@@ -333,6 +333,12 @@ class StandaloneAdmin {
         form.reset();
         this.populateCompanySelect();
         
+        // Hide description and specifications fields
+        const descriptionGroup = document.querySelector('.form-group:nth-child(4)');
+        const specsGroup = document.querySelector('.form-group:nth-child(5)');
+        if (descriptionGroup) descriptionGroup.style.display = 'none';
+        if (specsGroup) specsGroup.style.display = 'none';
+        
         if (productId) {
             const product = this.getProduct(productId);
             if (product) {
@@ -341,9 +347,7 @@ class StandaloneAdmin {
                 document.getElementById('productName').value = product.name;
                 document.getElementById('productCategory').value = product.category;
                 document.getElementById('productCompany').value = product.companyId || this.getCompanyIdByProduct(productId);
-                document.getElementById('productPrice').value = product.price;
-                document.getElementById('productDescription').value = product.description || '';
-                document.getElementById('productSpecifications').value = product.specifications || '';
+                // Don't set price field as it's always 'da'
                 this.editingProduct = product;
             }
         } else {
@@ -447,112 +451,209 @@ class StandaloneAdmin {
             company.image = formData.image;
             this.saveData();
         }
+        
+        const modal = document.getElementById('companyModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
     }
 
-    getCompany(companyId) {
-        return this.companies.find(company => company.id === companyId);
+    renderProducts() {
+        const tbody = document.getElementById('productsTableBody');
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+
+        const allProducts = [];
+        this.companies.forEach(company => {
+            company.products.forEach(product => {
+                allProducts.push({
+                    ...product,
+                    companyName: company.name
+                });
+            });
+        });
+
+        allProducts.forEach(product => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${product.id}</td>
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>${product.companyName}</td>
+                <td>da</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="edit-btn" onclick="admin.editProduct('${product.id}')" title="Edit">
+                            <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        <button class="delete-btn" onclick="admin.deleteProduct('${product.id}')" title="Delete">
+                            <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
     }
 
-    addProduct(formData) {
-        const company = this.getCompany(formData.companyId);
-        if (!company) return;
+    openProductModal(productId = null) {
+        const modal = document.getElementById('productModal');
+        const title = document.getElementById('productModalTitle');
+        const form = document.getElementById('productForm');
+        
+        if (!modal || !title || !form) return;
+        
+        form.reset();
+        this.populateCompanySelect();
+        
+        // Hide description and specifications fields
+        const descriptionGroup = document.querySelector('.form-group:nth-child(4)');
+        const specsGroup = document.querySelector('.form-group:nth-child(5)');
+        if (descriptionGroup) descriptionGroup.style.display = 'none';
+        if (specsGroup) specsGroup.style.display = 'none';
+        
+        if (productId) {
+            const product = this.getProduct(productId);
+            if (product) {
+                title.textContent = 'Edit Product';
+                document.getElementById('productId').value = product.id;
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productCompany').value = product.companyId || this.getCompanyIdByProduct(productId);
+                // Don't set price field as it's always 'da'
+                this.editingProduct = product;
+            }
+        } else {
+            title.textContent = 'Add Product';
+            this.editingProduct = null;
+        }
+        
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
 
+    closeProductModal() {
+        const modal = document.getElementById('productModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            this.editingProduct = null;
+        }
+    }
+
+    getProduct(productId) {
+        if (!this.companies) return null;
+        for (let company of this.companies) {
+        const product = company.products.find(p => p.id === productId);
+        if (product) {
+            return product;
+        }
+    }
+    return null;
+}
+
+getCompanyIdByProduct(productId) {
+    for (let company of this.companies) {
+        if (company.products.find(p => p.id === productId)) {
+            return company.id;
+        }
+    }
+    return null;
+}
+
+editProduct(productId) {
+    this.openProductModal(productId);
+}
+
+populateCompanySelect() {
+    const select = document.getElementById('productCompany');
+    if (!select) return;
+    
+    select.innerHTML = '<option value="">Select a company</option>';
+    
+    this.companies.forEach(company => {
+        const option = document.createElement('option');
+        option.value = company.id;
+        option.textContent = company.name;
+        select.appendChild(option);
+    });
+}
+
+closeCompanyModal() {
+    const modal = document.getElementById('companyModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    this.editingCompany = null;
+}
+
+editCompany(companyId) {
+    this.openCompanyModal(companyId);
+}
+
+saveCompany() {
+    const formData = {
+        name: document.getElementById('companyName').value.trim(),
+        image: ''
+    };
+
+    if (!formData.name) {
+        customAlerts.showAlert('Please fill in all required fields.', 'Validation Error', 'warning');
+        return;
+    }
+
+    const companyId = document.getElementById('companyId').value;
+    
+    if (companyId) {
+        // Update existing company
+        this.updateCompany(companyId, formData);
+    } else {
+        // Add new company
+        this.addCompany(formData);
+    }
+
+    this.closeAllModals();
+    this.renderCompanies();
+    this.updateStats();
+    this.populateCompanySelect();
+    
+    const action = companyId ? 'updated' : 'added';
+    customAlerts.success(`Company ${action} successfully!`);
+}
+
+updateCompany(companyId, formData) {
+    const company = this.getCompany(companyId);
+    if (company) {
+        company.name = formData.name;
+        company.image = formData.image;
+        this.saveData();
+    }
+}
+
+getCompany(companyId) {
+    return this.companies.find(company => company.id === companyId);
+}
+
+addProduct(formData) {
+    const companyIndex = this.companies.findIndex(c => c.id === formData.companyId);
+    if (companyIndex !== -1) {
         const newProduct = {
             id: this.generateId(),
             name: formData.name,
             category: formData.category,
-            price: parseFloat(formData.price),
-            description: formData.description,
-            specifications: formData.specifications
+            price: 'da', // Always set price to 'da'
+            stock: 0,
+            description: '', // No longer using description
+            specifications: '', // No longer using specifications
+            createdAt: new Date().toISOString()
         };
 
-        company.products.push(newProduct);
-        this.saveData();
-    }
-
-    updateProduct(productId, formData) {
-        const product = this.getProduct(productId);
-        if (!product) return;
-
-        const oldCompanyId = this.getCompanyIdByProduct(productId);
-        if (oldCompanyId !== formData.companyId) {
-            const oldCompany = this.getCompany(oldCompanyId);
-            if (oldCompany) {
-                const productIndex = oldCompany.products.findIndex(p => p.id === productId);
-                if (productIndex !== -1) {
-                    oldCompany.products.splice(productIndex, 1);
-                }
-            }
-        }
-
-        product.name = formData.name;
-        product.category = formData.category;
-        product.price = parseFloat(formData.price);
-        product.description = formData.description;
-        product.specifications = formData.specifications;
-
-        if (oldCompanyId !== formData.companyId) {
-            const newCompany = this.getCompany(formData.companyId);
-            if (newCompany) {
-                newCompany.products.push(product);
-            }
-        }
-
-        this.saveData();
-    }
-
-    deleteProduct(productId) {
-        const product = this.getProduct(productId);
-        if (!product) return;
-
-        customAlerts.showConfirm(`Are you sure you want to delete "${product.name}"?`, 'Delete Product', 'danger').then((confirmed) => {
-            if (confirmed) {
-                for (let company of this.companies) {
-                    const productIndex = company.products.findIndex(p => p.id === productId);
-                    if (productIndex !== -1) {
-                        company.products.splice(productIndex, 1);
-                        this.saveData();
-                        this.renderProducts();
-                        this.updateStats();
-                        customAlerts.success('Product deleted successfully!');
-                        break;
-                    }
-                }
-            }
-        });
-    }
-
-    deleteCompany(companyId) {
-        const company = this.getCompany(companyId);
-        if (!company) return;
-
-        customAlerts.showConfirm(`Are you sure you want to delete "${company.name}" and all its products?`, 'Delete Company', 'danger').then((confirmed) => {
-            if (confirmed) {
-                const index = this.companies.findIndex(c => c.id === companyId);
-                if (index !== -1) {
-                    this.companies.splice(index, 1);
-                    this.saveData();
-                    this.renderCompanies();
-                    this.renderProducts();
-                    this.updateStats();
-                    this.populateCompanySelect();
-                    customAlerts.success('Company deleted successfully!');
-                }
-            }
-        });
-    }
-
-    saveProduct() {
-        const formData = {
-            name: document.getElementById('productName').value.trim(),
-            category: document.getElementById('productCategory').value.trim(),
-            companyId: document.getElementById('productCompany').value,
-            price: document.getElementById('productPrice').value,
-            description: document.getElementById('productDescription').value.trim(),
-            specifications: document.getElementById('productSpecifications').value.trim()
-        };
-
-        if (!formData.name || !formData.category || !formData.companyId || !formData.price) {
+        if (!formData.name || !formData.category || !formData.companyId) {
             customAlerts.showAlert('Please fill in all required fields.', 'Validation Error', 'warning');
             return;
         }
@@ -563,7 +664,7 @@ class StandaloneAdmin {
             // Update existing product
             this.updateProduct(productId, formData);
         } else {
-            // Add new product
+            // Add new product with 'da' price
             this.addProduct(formData);
         }
 
@@ -609,7 +710,7 @@ class StandaloneAdmin {
         const company = this.getCompany(id);
         if (!company) return;
 
-        const hasProducts = company.products.length > 0;
+        const hasProducts = company.products && company.products.length > 0;
         const message = hasProducts 
             ? `Are you sure you want to delete "${company.name}"? This will also delete ${company.products.length} product(s).`
             : `Are you sure you want to delete "${company.name}"`;
@@ -625,27 +726,6 @@ class StandaloneAdmin {
                     this.updateStats();
                     this.populateCompanySelect();
                     customAlerts.success('Company deleted successfully!');
-                }
-            }
-        });
-    }
-
-    deleteProduct(id) {
-        const product = this.getProduct(id);
-        if (!product) return;
-
-        customAlerts.showConfirm(`Are you sure you want to delete "${product.name}"?`, 'Delete Product', 'danger').then((confirmed) => {
-            if (confirmed) {
-                for (let company of this.companies) {
-                    const productIndex = company.products.findIndex(p => p.id === id);
-                    if (productIndex !== -1) {
-                        company.products.splice(productIndex, 1);
-                        this.saveData();
-                        this.renderProducts();
-                        this.updateStats();
-                        customAlerts.success('Product deleted successfully!');
-                        break;
-                    }
                 }
             }
         });

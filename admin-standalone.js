@@ -95,7 +95,7 @@ class StandaloneAdmin {
             this.createSession(rememberMe);
             this.showAdminPanel();
         } else {
-            this.showError('Invalid username or password');
+            this.showError('Nom d\'utilisateur ou mot de passe invalide');
         }
     }
 
@@ -241,12 +241,12 @@ class StandaloneAdmin {
                 <td>${company.products.length}</td>
                 <td>
                     <div class="action-buttons">
-                        <button class="edit-btn" onclick="admin.editCompany('${company.id}')" title="Edit">
+                        <button class="edit-btn" onclick="admin.editCompany('${company.id}')" title="Modifier">
                             <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </button>
-                        <button class="delete-btn" onclick="admin.deleteCompany('${company.id}')" title="Delete">
+                        <button class="delete-btn" onclick="admin.deleteCompany('${company.id}')" title="Supprimer">
                             <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
@@ -268,13 +268,13 @@ class StandaloneAdmin {
         if (companyId) {
             const company = this.getCompany(companyId);
             if (company) {
-                title.textContent = 'Edit Company';
+                title.textContent = 'Modifier la société';
                 document.getElementById('companyId').value = company.id;
                 document.getElementById('companyName').value = company.name;
                 this.editingCompany = company;
             }
         } else {
-            title.textContent = 'Add Company';
+            title.textContent = 'Ajouter une société';
             this.editingCompany = null;
         }
         
@@ -308,12 +308,12 @@ class StandaloneAdmin {
                 <td>da</td>
                 <td>
                     <div class="action-buttons">
-                        <button class="edit-btn" onclick="admin.editProduct('${product.id}')" title="Edit">
+                        <button class="edit-btn" onclick="admin.editProduct('${product.id}')" title="Modifier">
                             <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </button>
-                        <button class="delete-btn" onclick="admin.deleteProduct('${product.id}')" title="Delete">
+                        <button class="delete-btn" onclick="admin.deleteProduct('${product.id}')" title="Supprimer">
                             <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
@@ -342,7 +342,7 @@ class StandaloneAdmin {
         if (productId) {
             const product = this.getProduct(productId);
             if (product) {
-                title.textContent = 'Edit Product';
+                title.textContent = 'Modifier le produit';
                 document.getElementById('productId').value = product.id;
                 document.getElementById('productName').value = product.name;
                 document.getElementById('productCategory').value = product.category;
@@ -351,7 +351,7 @@ class StandaloneAdmin {
                 this.editingProduct = product;
             }
         } else {
-            title.textContent = 'Add Product';
+            title.textContent = 'Ajouter un produit';
             this.editingProduct = null;
         }
         
@@ -393,7 +393,7 @@ class StandaloneAdmin {
         const select = document.getElementById('productCompany');
         if (!select) return;
         
-        select.innerHTML = '<option value="">Select a company</option>';
+        select.innerHTML = '<option value="">Sélectionner une société</option>';
         
         this.companies.forEach(company => {
             const option = document.createElement('option');
@@ -421,7 +421,7 @@ class StandaloneAdmin {
         };
 
         if (!formData.name) {
-            customAlerts.showAlert('Please fill in all required fields.', 'Validation Error', 'warning');
+            customAlerts.showAlert('Veuillez remplir tous les champs obligatoires.', 'Erreur de validation', 'warning');
             return;
         }
 
@@ -440,8 +440,8 @@ class StandaloneAdmin {
         this.updateStats();
         this.populateCompanySelect();
         
-        const action = companyId ? 'updated' : 'added';
-        customAlerts.success(`Company ${action} successfully!`);
+        const action = companyId ? 'mise à jour' : 'ajout';
+        customAlerts.success(`Société ${action} avec succès !`);
     }
 
     updateCompany(companyId, formData) {
@@ -459,273 +459,32 @@ class StandaloneAdmin {
         }
     }
 
-    renderProducts() {
-        const tbody = document.getElementById('productsTableBody');
-        if (!tbody) return;
-        
-        tbody.innerHTML = '';
-
-        const allProducts = [];
-        this.companies.forEach(company => {
-            company.products.forEach(product => {
-                allProducts.push({
-                    ...product,
-                    companyName: company.name
-                });
-            });
-        });
-
-        allProducts.forEach(product => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${product.id}</td>
-                <td>${product.name}</td>
-                <td>${product.category}</td>
-                <td>${product.companyName}</td>
-                <td>da</td>
-                <td>
-                    <div class="action-buttons">
-                        <button class="edit-btn" onclick="admin.editProduct('${product.id}')" title="Edit">
-                            <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                            </svg>
-                        </button>
-                        <button class="delete-btn" onclick="admin.deleteProduct('${product.id}')" title="Delete">
-                            <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
+    getCompany(companyId) {
+        return this.companies.find(company => company.id === companyId);
     }
 
-    openProductModal(productId = null) {
-        const modal = document.getElementById('productModal');
-        const title = document.getElementById('productModalTitle');
-        const form = document.getElementById('productForm');
-        
-        if (!modal || !title || !form) return;
-        
-        form.reset();
-        this.populateCompanySelect();
-        
-        // Hide description and specifications fields
-        const descriptionGroup = document.querySelector('.form-group:nth-child(4)');
-        const specsGroup = document.querySelector('.form-group:nth-child(5)');
-        if (descriptionGroup) descriptionGroup.style.display = 'none';
-        if (specsGroup) specsGroup.style.display = 'none';
-        
-        if (productId) {
-            const product = this.getProduct(productId);
-            if (product) {
-                title.textContent = 'Edit Product';
-                document.getElementById('productId').value = product.id;
-                document.getElementById('productName').value = product.name;
-                document.getElementById('productCategory').value = product.category;
-                document.getElementById('productCompany').value = product.companyId || this.getCompanyIdByProduct(productId);
-                // Don't set price field as it's always 'da'
-                this.editingProduct = product;
-            }
-        } else {
-            title.textContent = 'Add Product';
-            this.editingProduct = null;
-        }
-        
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-    }
-
-    closeProductModal() {
-        const modal = document.getElementById('productModal');
-        if (modal) {
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            this.editingProduct = null;
-        }
-    }
-
-    getProduct(productId) {
-        if (!this.companies) return null;
-        for (let company of this.companies) {
-        const product = company.products.find(p => p.id === productId);
-        if (product) {
-            return product;
-        }
-    }
-    return null;
-}
-
-getCompanyIdByProduct(productId) {
-    for (let company of this.companies) {
-        if (company.products.find(p => p.id === productId)) {
-            return company.id;
-        }
-    }
-    return null;
-}
-
-editProduct(productId) {
-    this.openProductModal(productId);
-}
-
-populateCompanySelect() {
-    const select = document.getElementById('productCompany');
-    if (!select) return;
-    
-    select.innerHTML = '<option value="">Select a company</option>';
-    
-    this.companies.forEach(company => {
-        const option = document.createElement('option');
-        option.value = company.id;
-        option.textContent = company.name;
-        select.appendChild(option);
-    });
-}
-
-closeCompanyModal() {
-    const modal = document.getElementById('companyModal');
-    modal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
-    this.editingCompany = null;
-}
-
-editCompany(companyId) {
-    this.openCompanyModal(companyId);
-}
-
-saveCompany() {
-    const formData = {
-        name: document.getElementById('companyName').value.trim(),
-        image: ''
-    };
-
-    if (!formData.name) {
-        customAlerts.showAlert('Please fill in all required fields.', 'Validation Error', 'warning');
-        return;
-    }
-
-    const companyId = document.getElementById('companyId').value;
-    
-    if (companyId) {
-        // Update existing company
-        this.updateCompany(companyId, formData);
-    } else {
-        // Add new company
-        this.addCompany(formData);
-    }
-
-    this.closeAllModals();
-    this.renderCompanies();
-    this.updateStats();
-    this.populateCompanySelect();
-    
-    const action = companyId ? 'updated' : 'added';
-    customAlerts.success(`Company ${action} successfully!`);
-}
-
-updateCompany(companyId, formData) {
-    const company = this.getCompany(companyId);
-    if (company) {
-        company.name = formData.name;
-        company.image = formData.image;
-        this.saveData();
-    }
-}
-
-getCompany(companyId) {
-    return this.companies.find(company => company.id === companyId);
-}
-
-addProduct(formData) {
-    const companyIndex = this.companies.findIndex(c => c.id === formData.companyId);
-    if (companyIndex !== -1) {
-        const newProduct = {
-            id: this.generateId(),
-            name: formData.name,
-            category: formData.category,
-            price: 'da', // Always set price to 'da'
-            stock: 0,
-            description: '', // No longer using description
-            specifications: '', // No longer using specifications
-            createdAt: new Date().toISOString()
-        };
-
-        if (!formData.name || !formData.category || !formData.companyId) {
-            customAlerts.showAlert('Please fill in all required fields.', 'Validation Error', 'warning');
-            return;
-        }
-
-        const productId = document.getElementById('productId').value;
-        
-        if (productId) {
-            // Update existing product
-            this.updateProduct(productId, formData);
-        } else {
-            // Add new product with 'da' price
-            this.addProduct(formData);
-        }
-
-        this.closeProductModal();
-        this.renderProducts();
-        this.updateStats();
-        
-        const action = productId ? 'updated' : 'added';
-        customAlerts.success(`Product ${action} successfully!`);
-    }
-
-    addCompany(companyData) {
-        const newId = this.generateId();
-        const newCompany = {
-            id: newId,
-            name: companyData.name,
-            image: '',
-            products: []
-        };
-        this.companies.push(newCompany);
-        this.saveData();
-        return newCompany;
-    }
-
-    updateCompany(id, companyData) {
-        const index = this.companies.findIndex(c => c.id === id);
-        if (index !== -1) {
-            this.companies[index] = {
-                ...this.companies[index],
-                name: companyData.name,
-                image: ''
+    addProduct(formData) {
+        const companyIndex = this.companies.findIndex(c => c.id === formData.companyId);
+        if (companyIndex !== -1) {
+            const newProduct = {
+                id: this.generateId(),
+                name: formData.name,
+                category: formData.category,
+                price: 'da', // Always set price to 'da'
+                stock: 0,
+                description: '', // No longer using description
+                specifications: '', // No longer using specifications
+                createdAt: new Date().toISOString()
             };
-            this.companies[index].products.forEach(product => {
-                product.company = companyData.name;
-            });
-            this.saveData();
-            return this.companies[index];
-        }
-        return null;
-    }
 
-    deleteCompany(id) {
-        const company = this.getCompany(id);
-        if (!company) return;
-
-        const hasProducts = company.products && company.products.length > 0;
-        const message = hasProducts 
-            ? `Are you sure you want to delete "${company.name}"? This will also delete ${company.products.length} product(s).`
-            : `Are you sure you want to delete "${company.name}"`;
-
-        customAlerts.showConfirm(message, 'Delete Company', 'danger').then((confirmed) => {
-            if (confirmed) {
-                const index = this.companies.findIndex(c => c.id === id);
-                if (index !== -1) {
-                    this.companies.splice(index, 1);
-                    this.saveData();
+            if (!formData.name || !formData.category || !formData.companyId) {
+                customAlerts.showAlert('Veuillez remplir tous les champs obligatoires.', 'Erreur de validation', 'warning');
+                return;
                     this.renderCompanies();
                     this.renderProducts();
                     this.updateStats();
                     this.populateCompanySelect();
-                    customAlerts.success('Company deleted successfully!');
+                    customAlerts.success('Société supprimée avec succès !');
                 }
             }
         });
@@ -803,7 +562,7 @@ addProduct(formData) {
     }
 
     resetData() {
-        customAlerts.showConfirm('Are you sure you want to reset all data? This action cannot be undone.', 'Reset All Data', 'danger').then((confirmed) => {
+        customAlerts.showConfirm('Êtes-vous sûr de vouloir réinitialiser toutes les données ? Cette action est irréversible.', 'Réinitialiser les données', 'danger').then((confirmed) => {
             if (confirmed) {
                 // Clear localStorage and reinitialize database
                 if (this.database) {
@@ -819,7 +578,7 @@ addProduct(formData) {
                 this.renderProducts();
                 this.updateStats();
                 this.populateCompanySelect();
-                customAlerts.success('Data has been reset to default values!');
+                customAlerts.success('Les données ont été réinitialisées aux valeurs par défaut !');
             }
         });
     }

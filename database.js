@@ -11,77 +11,77 @@ class Database {
                 companies: [
                     {
                         id: '1',
-                        name: 'SteelTech Industries',
+                        name: 'c1',
                         image: 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'p1', name: 'Hex Bolts M8', category: 'Bolts', price: 15.99, stock: 100, createdAt: new Date().toISOString() },
-                            { id: 'd1', name: 'Socket Screws', category: 'Screws', price: 12.50, stock: 75, createdAt: new Date().toISOString() },
-                            { id: 'c1', name: 'Washers Set', category: 'Washers', price: 8.99, stock: 200, createdAt: new Date().toISOString() },
-                            { id: 'c2', name: 'Nuts Assorted', category: 'Nuts', price: 10.25, stock: 150, createdAt: new Date().toISOString() },
-                            { id: 'c3', name: 'Anchor Bolts', category: 'Bolts', price: 22.99, stock: 50, createdAt: new Date().toISOString() },
-                            { id: 'p2', name: 'Carriage Bolts', category: 'Bolts', price: 18.75, stock: 80, createdAt: new Date().toISOString() },
-                            { id: 'd2', name: 'Machine Screws', category: 'Screws', price: 14.30, stock: 120, createdAt: new Date().toISOString() },
-                            { id: 'c4', name: 'Lock Washers', category: 'Washers', price: 9.99, stock: 180, createdAt: new Date().toISOString() }
+                            { id: 'p1', name: 'p1', category: 'Bolts', price: 15.99, stock: 100, createdAt: new Date().toISOString() },
+                            { id: 'p2', name: 'p2', category: 'Screws', price: 12.50, stock: 75, createdAt: new Date().toISOString() },
+                            { id: 'p3', name: 'p3', category: 'Washers', price: 8.99, stock: 200, createdAt: new Date().toISOString() },
+                            { id: 'p4', name: 'p4', category: 'Nuts', price: 10.25, stock: 150, createdAt: new Date().toISOString() },
+                            { id: 'p5', name: 'p5', category: 'Bolts', price: 22.99, stock: 50, createdAt: new Date().toISOString() },
+                            { id: 'p6', name: 'p6', category: 'Bolts', price: 18.75, stock: 80, createdAt: new Date().toISOString() },
+                            { id: 'p7', name: 'p7', category: 'Screws', price: 14.30, stock: 120, createdAt: new Date().toISOString() },
+                            { id: 'p8', name: 'p8', category: 'Washers', price: 9.99, stock: 180, createdAt: new Date().toISOString() }
                         ]
                     },
                     {
                         id: '2',
-                        name: 'ProFast Hardware',
+                        name: 'c2',
                         image: 'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'x1', name: 'Stainless Bolts', category: 'Bolts', price: 25.99, stock: 60, createdAt: new Date().toISOString() },
-                            { id: 'y1', name: 'Wing Nuts', category: 'Nuts', price: 11.50, stock: 90, createdAt: new Date().toISOString() },
-                            { id: 'z1', name: 'Flat Washers', category: 'Washers', price: 7.25, stock: 250, createdAt: new Date().toISOString() },
-                            { id: 'x2', name: 'Thumb Screws', category: 'Screws', price: 16.99, stock: 45, createdAt: new Date().toISOString() },
-                            { id: 'y2', name: 'Cap Nuts', category: 'Nuts', price: 13.75, stock: 70, createdAt: new Date().toISOString() },
-                            { id: 'z2', name: 'U-Bolts', category: 'Bolts', price: 19.99, stock: 35, createdAt: new Date().toISOString() }
+                            { id: 'p9', name: 'p9', category: 'Bolts', price: 25.99, stock: 60, createdAt: new Date().toISOString() },
+                            { id: 'p10', name: 'p10', category: 'Nuts', price: 11.50, stock: 90, createdAt: new Date().toISOString() },
+                            { id: 'p11', name: 'p11', category: 'Washers', price: 7.25, stock: 250, createdAt: new Date().toISOString() },
+                            { id: 'p12', name: 'p12', category: 'Screws', price: 16.99, stock: 45, createdAt: new Date().toISOString() },
+                            { id: 'p13', name: 'p13', category: 'Nuts', price: 13.75, stock: 70, createdAt: new Date().toISOString() },
+                            { id: 'p14', name: 'p14', category: 'Bolts', price: 19.99, stock: 35, createdAt: new Date().toISOString() }
                         ]
                     },
                     {
                         id: '3',
-                        name: 'Precision Fasteners',
+                        name: 'c3',
                         image: 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'a1', name: 'Precision Bolts', category: 'Bolts', price: 28.50, stock: 40, createdAt: new Date().toISOString() },
-                            { id: 'b1', name: 'Metric Screws', category: 'Screws', price: 15.25, stock: 85, createdAt: new Date().toISOString() },
-                            { id: 'c5', name: 'Spring Washers', category: 'Washers', price: 9.75, stock: 160, createdAt: new Date().toISOString() },
-                            { id: 'a2', name: 'Flange Nuts', category: 'Nuts', price: 17.99, stock: 55, createdAt: new Date().toISOString() },
-                            { id: 'b2', name: 'Set Screws', category: 'Screws', price: 13.50, stock: 95, createdAt: new Date().toISOString() },
-                            { id: 'c6', name: 'Eye Bolts', category: 'Bolts', price: 21.25, stock: 30, createdAt: new Date().toISOString() },
-                            { id: 'a3', name: 'Fender Washers', category: 'Washers', price: 8.50, stock: 220, createdAt: new Date().toISOString() }
+                            { id: 'p15', name: 'p15', category: 'Bolts', price: 28.50, stock: 40, createdAt: new Date().toISOString() },
+                            { id: 'p16', name: 'p16', category: 'Screws', price: 15.25, stock: 85, createdAt: new Date().toISOString() },
+                            { id: 'p17', name: 'p17', category: 'Washers', price: 9.75, stock: 160, createdAt: new Date().toISOString() },
+                            { id: 'p18', name: 'p18', category: 'Nuts', price: 17.99, stock: 55, createdAt: new Date().toISOString() },
+                            { id: 'p19', name: 'p19', category: 'Screws', price: 13.50, stock: 95, createdAt: new Date().toISOString() },
+                            { id: 'p20', name: 'p20', category: 'Bolts', price: 21.25, stock: 30, createdAt: new Date().toISOString() },
+                            { id: 'p21', name: 'p21', category: 'Washers', price: 8.50, stock: 220, createdAt: new Date().toISOString() }
                         ]
                     },
                     {
                         id: '4',
-                        name: 'Industrial Supply Co',
+                        name: 'c4',
                         image: 'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'm1', name: 'Heavy Duty Bolts', category: 'Bolts', price: 35.99, stock: 25, createdAt: new Date().toISOString() },
-                            { id: 'n1', name: 'Torx Screws', category: 'Screws', price: 18.75, stock: 65, createdAt: new Date().toISOString() },
-                            { id: 'o1', name: 'Locking Nuts', category: 'Nuts', price: 14.99, stock: 110, createdAt: new Date().toISOString() },
-                            { id: 'm2', name: 'Structural Bolts', category: 'Bolts', price: 42.50, stock: 20, createdAt: new Date().toISOString() },
-                            { id: 'n2', name: 'Phillips Screws', category: 'Screws', price: 12.25, stock: 140, createdAt: new Date().toISOString() },
-                            { id: 'o2', name: 'Split Washers', category: 'Washers', price: 10.50, stock: 175, createdAt: new Date().toISOString() },
-                            { id: 'm3', name: 'Threaded Rods', category: 'Rods', price: 24.99, stock: 45, createdAt: new Date().toISOString() },
-                            { id: 'n3', name: 'Coupling Nuts', category: 'Nuts', price: 16.75, stock: 80, createdAt: new Date().toISOString() }
+                            { id: 'p22', name: 'p22', category: 'Bolts', price: 35.99, stock: 25, createdAt: new Date().toISOString() },
+                            { id: 'p23', name: 'p23', category: 'Screws', price: 18.75, stock: 65, createdAt: new Date().toISOString() },
+                            { id: 'p24', name: 'p24', category: 'Nuts', price: 14.99, stock: 110, createdAt: new Date().toISOString() },
+                            { id: 'p25', name: 'p25', category: 'Bolts', price: 42.50, stock: 20, createdAt: new Date().toISOString() },
+                            { id: 'p26', name: 'p26', category: 'Screws', price: 12.25, stock: 140, createdAt: new Date().toISOString() },
+                            { id: 'p27', name: 'p27', category: 'Washers', price: 10.50, stock: 175, createdAt: new Date().toISOString() },
+                            { id: 'p28', name: 'p28', category: 'Rods', price: 24.99, stock: 45, createdAt: new Date().toISOString() },
+                            { id: 'p29', name: 'p29', category: 'Nuts', price: 16.75, stock: 80, createdAt: new Date().toISOString() }
                         ]
                     },
                     {
                         id: '5',
-                        name: 'BoltMaster Pro',
+                        name: 'c5',
                         image: 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'q1', name: 'Grade 8 Bolts', category: 'Bolts', price: 32.99, stock: 30, createdAt: new Date().toISOString() },
-                            { id: 'r1', name: 'Allen Screws', category: 'Screws', price: 19.50, stock: 75, createdAt: new Date().toISOString() },
-                            { id: 's1', name: 'Nylon Nuts', category: 'Nuts', price: 13.25, stock: 100, createdAt: new Date().toISOString() },
-                            { id: 'q2', name: 'Shoulder Bolts', category: 'Bolts', price: 26.75, stock: 40, createdAt: new Date().toISOString() },
-                            { id: 'r2', name: 'Wood Screws', category: 'Screws', price: 11.99, stock: 200, createdAt: new Date().toISOString() },
-                            { id: 's2', name: 'Rubber Washers', category: 'Washers', price: 8.75, stock: 150, createdAt: new Date().toISOString() }
+                            { id: 'p30', name: 'p30', category: 'Bolts', price: 32.99, stock: 30, createdAt: new Date().toISOString() },
+                            { id: 'p31', name: 'p31', category: 'Screws', price: 19.50, stock: 75, createdAt: new Date().toISOString() },
+                            { id: 'p32', name: 'p32', category: 'Nuts', price: 13.25, stock: 100, createdAt: new Date().toISOString() },
+                            { id: 'p33', name: 'p33', category: 'Bolts', price: 26.75, stock: 40, createdAt: new Date().toISOString() },
+                            { id: 'p34', name: 'p34', category: 'Screws', price: 11.99, stock: 200, createdAt: new Date().toISOString() },
+                            { id: 'p35', name: 'p35', category: 'Washers', price: 8.75, stock: 150, createdAt: new Date().toISOString() }
                         ]
                     }
                 ],

@@ -231,8 +231,12 @@
 
     <script>
         // Handle admin routing
-        if (window.location.hash === '#admin' || window.location.pathname.includes('/admin')) {
+        if (window.location.hash === '#admin') {
             window.location.href = 'admin.html';
+        }
+        // Don't redirect if already on admin page to avoid loops
+        if (window.location.pathname.includes('/admin') && !window.location.pathname.includes('admin.html')) {
+            window.location.href = window.location.origin + window.location.pathname.replace('/admin', '/admin.html');
         }
     </script>
     <script src="script.js"></script>

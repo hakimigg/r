@@ -250,63 +250,26 @@ function clearSearch() {
 function openProductModal(productId) {
     console.log('Opening modal for product:', productId);
     const product = getAllProducts().find(p => p.id === productId);
-    console.log('Found product:', product);
     if (!product) {
         console.log('Product not found!');
         return;
     }
     
-    document.getElementById('modalProductName').textContent = product.name;
-    document.getElementById('modalProductCategory').textContent = product.category;
-    document.getElementById('modalProductCompany').textContent = product.company;
+    // Set basic product info
+    document.getElementById('modalProductName').textContent = product.name || 'Product';
+    document.getElementById('modalProductCategory').textContent = product.category || 'General';
+    document.getElementById('modalProductCompany').textContent = product.company || 'Company';
     
-    let price;
-    if (typeof product.price === 'number') {
-        price = `$${product.price.toFixed(2)}`;
-    } else if (product.price) {
-        price = product.price; // Use the string value directly (like "da")
-    } else {
-        price = `$${(Math.random() * 50 + 5).toFixed(2)}`;
-    }
-    document.getElementById('modalProductPrice').textContent = price;
+    // Set price (always show 'da' as per requirement)
+    document.getElementById('modalProductPrice').textContent = 'da';
     
-    const descriptionEl = document.getElementById('modalProductDescription');
-    const specificationsEl = document.getElementById('modalProductSpecs'); // Changed ID to match HTML
-    
-    if (descriptionEl) {
-        if (product.description) {
-            descriptionEl.textContent = product.description;
-            descriptionEl.style.display = 'block';
-        } else {
-            descriptionEl.style.display = 'none';
-        }
-    }
-    
-    if (specificationsEl) {
-        // Create specifications list if it doesn't exist
-        if (product.specifications) {
-            // If specifications is a string, convert it to an array
-            const specs = typeof product.specifications === 'string' 
-                ? product.specifications.split(',').map(s => s.trim())
-                : (Array.isArray(product.specifications) ? product.specifications : []);
-            
-            if (specs.length > 0) {
-                specificationsEl.innerHTML = specs.map(spec => 
-                    `<li>${spec}</li>`
-                ).join('');
-                specificationsEl.style.display = 'block';
-            } else {
-                specificationsEl.style.display = 'none';
-            }
-        } else {
-            specificationsEl.style.display = 'none';
-        }
-    }
-    
+    // Show the modal
     const modal = document.getElementById('productModal');
-    modal.style.display = 'flex';
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
 }
 
 function closeProductModal() {

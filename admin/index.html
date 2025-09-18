@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Company Products Directory</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loginSection" class="min-h-screen bg-gradient">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="logo-container">
+                        <svg class="logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="login-title">Admin Panel</h1>
+                    <p class="login-subtitle">Company Products Directory</p>
+                </div>
+
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            class="form-input" 
+                            placeholder="Enter your username"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        <span class="btn-text">Sign In</span>
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </button>
+
+                    <div id="loginError" class="login-error hidden">
+                        <svg class="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span id="errorMessage">Invalid username or password</span>
+                    </div>
+                </form>
+
+                <div class="login-footer">
+                    <a href="index.html" class="back-link">
+                        <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back to Website
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminSection" class="admin-container hidden">
+        <header class="admin-header">
+            <nav class="admin-nav">
+                <div class="admin-logo">
+                    <svg class="logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <h1 class="admin-title">Admin Dashboard</h1>
+                </div>
+                <div class="admin-user">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Administrator</div>
+                        <div class="user-role">System Admin</div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="admin-main">
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCompanies">0</div>
+                    <div class="stat-label">Total Companies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalProducts">0</div>
+                    <div class="stat-label">Total Products</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgProductsPerCompany">0</div>
+                    <div class="stat-label">Avg Products/Company</div>
+                </div>
+            </div>
+
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="showTab('companies')">Companies</button>
+                <button class="tab-btn" onclick="showTab('products')">Products</button>
+                <button class="tab-btn" onclick="showTab('featured')">Featured Products</button>
+                <button class="tab-btn" onclick="showTab('settings')">Settings</button>
+            </div>
+
+            <div id="companiesTab" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">Manage Companies</h2>
+                    <button class="add-btn" onclick="openCompanyModal()">
+                        <svg class="add-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add Company
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Company Name</th>
+                            <th>Products Count</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="companiesTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="productsTab" class="tab-content hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Manage Products</h2>
+                    <button class="add-btn" onclick="openProductModal()">
+                        <svg class="add-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add Product
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Company</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="featuredTab" class="tab-content hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Manage Featured Products</h2>
+                    <button class="add-btn" onclick="openFeaturedModal()">
+                        <svg class="add-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add Featured Product
+                    </button>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Name</th>
+                            <th>Company</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="featuredTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="settingsTab" class="tab-content hidden">
+                <div class="section-header">
+                    <h2 class="section-title">System Settings</h2>
+                </div>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <h3>Data Management</h3>
+                        <p>Export or import your company and product data</p>
+                        <div class="setting-actions">
+                            <button class="add-btn" onclick="exportData()">Export Data</button>
+                            <button class="cancel-btn" onclick="document.getElementById('importFile').click()">Import Data</button>
+                            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <h3>Reset Data</h3>
+                        <p>Reset all data to default values</p>
+                        <div class="setting-actions">
+                            <button class="delete-btn" onclick="resetData()">Reset All Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="companyModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="companyModalTitle">Add Company</h3>
+                <button class="close-btn" onclick="closeCompanyModal()">&times;</button>
+            </div>
+            <form id="companyForm" class="modal-form">
+                <input type="hidden" id="companyId">
+                <div class="form-group">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" id="companyName" class="form-input" placeholder="Enter company name" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" onclick="closeCompanyModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Save Company</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="productModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="productModalTitle">Add Product</h3>
+                <button class="close-btn" onclick="closeProductModal()">&times;</button>
+            </div>
+            <form id="productForm" class="modal-form">
+                <input type="hidden" id="productId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" id="productName" class="form-input" placeholder="Enter product name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <input type="text" id="productCategory" class="form-input" placeholder="Enter category" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Company</label>
+                        <select id="productCompany" class="form-input" required>
+                            <option value="">Select a company</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Price ($)</label>
+                        <input type="number" id="productPrice" class="form-input" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea id="productDescription" class="form-input" rows="3" placeholder="Enter product description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Specifications</label>
+                    <textarea id="productSpecifications" class="form-input" rows="3" placeholder="Enter product specifications"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" onclick="closeProductModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="customAlert" class="custom-alert" style="display: none;">
+        <div class="alert-content">
+            <div id="alertIcon" class="alert-icon">
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                    <path id="alertIconPath" d=""></path>
+                </svg>
+            </div>
+            <h3 id="alertTitle" class="alert-title"></h3>
+            <p id="alertMessage" class="alert-message"></p>
+            <div id="alertActions" class="alert-actions">
+                <button id="alertCancel" class="alert-btn alert-btn-secondary" style="display: none;">Cancel</button>
+                <button id="alertConfirm" class="alert-btn alert-btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div id="featuredModal" class="custom-alert" style="display: none;">
+        <div class="alert-content" style="max-width: 600px; width: 90%;">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 id="featuredModalTitle" style="margin: 0; font-size: 1.5rem; color: var(--noir-profond);">Add Featured Product</h3>
+                <button onclick="closeFeaturedModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+            </div>
+            <form id="featuredForm" onsubmit="saveFeaturedProduct(event)">
+                <input type="hidden" id="featuredIndex">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--noir-profond);">Product ID</label>
+                        <input type="text" id="featuredProductId" style="width: 100%; padding: 0.75rem; border: 2px solid var(--gris-clair); border-radius: 8px;" placeholder="Enter product ID" required>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--noir-profond);">Product Name</label>
+                        <input type="text" id="featuredProductName" style="width: 100%; padding: 0.75rem; border: 2px solid var(--gris-clair); border-radius: 8px;" placeholder="Enter product name" required>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--noir-profond);">Company</label>
+                        <input type="text" id="featuredCompany" style="width: 100%; padding: 0.75rem; border: 2px solid var(--gris-clair); border-radius: 8px;" placeholder="Enter company name" required>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--noir-profond);">Price</label>
+                        <input type="number" id="featuredPrice" style="width: 100%; padding: 0.75rem; border: 2px solid var(--gris-clair); border-radius: 8px;" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--noir-profond);">Description</label>
+                    <textarea id="featuredDescription" style="width: 100%; padding: 0.75rem; border: 2px solid var(--gris-clair); border-radius: 8px; resize: vertical;" rows="3" placeholder="Enter product description" required></textarea>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" onclick="closeFeaturedModal()" style="padding: 0.75rem 1.5rem; background: var(--gris-clair); color: var(--noir-profond); border: none; border-radius: 8px; cursor: pointer;">Cancel</button>
+                    <button type="submit" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--dore-mat), #E6C485); color: var(--noir-profond); border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Save Featured Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../custom-alerts.js"></script>
+    <script src="../database.js"></script>
+    <script src="../admin-standalone.js"></script>
+</body>
+</html>

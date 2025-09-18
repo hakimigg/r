@@ -28,14 +28,29 @@ class StandaloneAdmin {
     }
 
     setupEventListeners() {
+        // Handle form submission
         const loginForm = document.getElementById('loginForm');
         if (loginForm) {
-            loginForm.addEventListener('submit', (e) => {
+            // Remove any existing event listeners
+            const newForm = loginForm.cloneNode(true);
+            loginForm.parentNode.replaceChild(newForm, loginForm);
+            
+            // Add new submit handler
+            newForm.onsubmit = (e) => {
                 e.preventDefault();
-                e.stopPropagation();
                 this.handleLogin();
                 return false;
-            });
+            };
+            
+            // Also handle button click directly
+            const loginBtn = newForm.querySelector('.login-btn');
+            if (loginBtn) {
+                loginBtn.onclick = (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                    return false;
+                };
+            }
         }
 
         const companyForm = document.getElementById('companyForm');
@@ -85,16 +100,26 @@ class StandaloneAdmin {
     }
 
     handleLogin() {
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-        const rememberMe = document.getElementById('rememberMe').checked;
+        // Directly get elements by ID
+        const username = document.getElementById('username')?.value.trim();
+        const password = document.getElementById('password')?.value;
+        const rememberMe = document.getElementById('rememberMe')?.checked;
         
-        this.hideError();
+        console.log('Login attempt with:', { username, password });
         
+        // Simple validation
+        if (!username || !password) {
+            this.showError('Veuillez remplir tous les champs');
+            return;
+        }
+        
+        // Check credentials
         if (username === this.credentials.username && password === this.credentials.password) {
+            console.log('Login successful');
             this.createSession(rememberMe);
             this.showAdminPanel();
         } else {
+            console.log('Login failed - invalid credentials');
             this.showError('Nom d\'utilisateur ou mot de passe invalide');
         }
     }
@@ -133,19 +158,21 @@ class StandaloneAdmin {
     }
 
     showError(message) {
-        const errorDiv = document.getElementById('loginError');
+        console.error('Login error:', message);
+        const errorElement = document.getElementById('loginError');
         const errorMessage = document.getElementById('errorMessage');
-        
-        if (errorDiv && errorMessage) {
+        if (errorElement && errorMessage) {
             errorMessage.textContent = message;
-            errorDiv.classList.remove('hidden');
+            errorElement.classList.remove('hidden');
+            errorElement.style.display = 'flex';
         }
     }
 
     hideError() {
-        const errorDiv = document.getElementById('loginError');
-        if (errorDiv) {
-            errorDiv.classList.add('hidden');
+        const errorElement = document.getElementById('loginError');
+        if (errorElement) {
+            errorElement.classList.add('hidden');
+            errorElement.style.display = 'none';
         }
     }
 

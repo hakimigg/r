@@ -6,7 +6,7 @@ class Database {
 
     init() {
         const existingData = localStorage.getItem(this.storageKey);
-        const currentVersion = '2.0'; // Updated version to force reset
+        const currentVersion = '2.1'; // Updated version to force reset with new prices
         
         let shouldReset = false;
         if (existingData) {
@@ -29,14 +29,14 @@ class Database {
                         image: 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'p1', name: 'p1', category: 'Bolts', price: 15.99, stock: 100, createdAt: new Date().toISOString() },
-                            { id: 'p2', name: 'p2', category: 'Screws', price: 12.50, stock: 75, createdAt: new Date().toISOString() },
-                            { id: 'p3', name: 'p3', category: 'Washers', price: 8.99, stock: 200, createdAt: new Date().toISOString() },
-                            { id: 'p4', name: 'p4', category: 'Nuts', price: 10.25, stock: 150, createdAt: new Date().toISOString() },
-                            { id: 'p5', name: 'p5', category: 'Bolts', price: 22.99, stock: 50, createdAt: new Date().toISOString() },
-                            { id: 'p6', name: 'p6', category: 'Bolts', price: 18.75, stock: 80, createdAt: new Date().toISOString() },
-                            { id: 'p7', name: 'p7', category: 'Screws', price: 14.30, stock: 120, createdAt: new Date().toISOString() },
-                            { id: 'p8', name: 'p8', category: 'Washers', price: 9.99, stock: 180, createdAt: new Date().toISOString() }
+                            { id: 'p1', name: 'p1', category: 'Bolts', price: 'da', stock: 100, createdAt: new Date().toISOString() },
+                            { id: 'p2', name: 'p2', category: 'Screws', price: 'da', stock: 75, createdAt: new Date().toISOString() },
+                            { id: 'p3', name: 'p3', category: 'Washers', price: 'da', stock: 200, createdAt: new Date().toISOString() },
+                            { id: 'p4', name: 'p4', category: 'Nuts', price: 'da', stock: 150, createdAt: new Date().toISOString() },
+                            { id: 'p5', name: 'p5', category: 'Bolts', price: 'da', stock: 50, createdAt: new Date().toISOString() },
+                            { id: 'p6', name: 'p6', category: 'Bolts', price: 'da', stock: 80, createdAt: new Date().toISOString() },
+                            { id: 'p7', name: 'p7', category: 'Screws', price: 'da', stock: 120, createdAt: new Date().toISOString() },
+                            { id: 'p8', name: 'p8', category: 'Washers', price: 'da', stock: 180, createdAt: new Date().toISOString() }
                         ]
                     },
                     {
@@ -45,12 +45,12 @@ class Database {
                         image: 'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'p9', name: 'p9', category: 'Bolts', price: 25.99, stock: 60, createdAt: new Date().toISOString() },
-                            { id: 'p10', name: 'p10', category: 'Nuts', price: 11.50, stock: 90, createdAt: new Date().toISOString() },
-                            { id: 'p11', name: 'p11', category: 'Washers', price: 7.25, stock: 250, createdAt: new Date().toISOString() },
-                            { id: 'p12', name: 'p12', category: 'Screws', price: 16.99, stock: 45, createdAt: new Date().toISOString() },
-                            { id: 'p13', name: 'p13', category: 'Nuts', price: 13.75, stock: 70, createdAt: new Date().toISOString() },
-                            { id: 'p14', name: 'p14', category: 'Bolts', price: 19.99, stock: 35, createdAt: new Date().toISOString() }
+                            { id: 'p9', name: 'p9', category: 'Bolts', price: 'da', stock: 60, createdAt: new Date().toISOString() },
+                            { id: 'p10', name: 'p10', category: 'Nuts', price: 'da', stock: 90, createdAt: new Date().toISOString() },
+                            { id: 'p11', name: 'p11', category: 'Washers', price: 'da', stock: 250, createdAt: new Date().toISOString() },
+                            { id: 'p12', name: 'p12', category: 'Screws', price: 'da', stock: 45, createdAt: new Date().toISOString() },
+                            { id: 'p13', name: 'p13', category: 'Nuts', price: 'da', stock: 70, createdAt: new Date().toISOString() },
+                            { id: 'p14', name: 'p14', category: 'Bolts', price: 'da', stock: 35, createdAt: new Date().toISOString() }
                         ]
                     },
                     {
@@ -59,13 +59,13 @@ class Database {
                         image: 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'p15', name: 'p15', category: 'Bolts', price: 28.50, stock: 40, createdAt: new Date().toISOString() },
-                            { id: 'p16', name: 'p16', category: 'Screws', price: 15.25, stock: 85, createdAt: new Date().toISOString() },
-                            { id: 'p17', name: 'p17', category: 'Washers', price: 9.75, stock: 160, createdAt: new Date().toISOString() },
-                            { id: 'p18', name: 'p18', category: 'Nuts', price: 17.99, stock: 55, createdAt: new Date().toISOString() },
-                            { id: 'p19', name: 'p19', category: 'Screws', price: 13.50, stock: 95, createdAt: new Date().toISOString() },
-                            { id: 'p20', name: 'p20', category: 'Bolts', price: 21.25, stock: 30, createdAt: new Date().toISOString() },
-                            { id: 'p21', name: 'p21', category: 'Washers', price: 8.50, stock: 220, createdAt: new Date().toISOString() }
+                            { id: 'p15', name: 'p15', category: 'Bolts', price: 'da', stock: 40, createdAt: new Date().toISOString() },
+                            { id: 'p16', name: 'p16', category: 'Screws', price: 'da', stock: 85, createdAt: new Date().toISOString() },
+                            { id: 'p17', name: 'p17', category: 'Washers', price: 'da', stock: 160, createdAt: new Date().toISOString() },
+                            { id: 'p18', name: 'p18', category: 'Nuts', price: 'da', stock: 55, createdAt: new Date().toISOString() },
+                            { id: 'p19', name: 'p19', category: 'Screws', price: 'da', stock: 95, createdAt: new Date().toISOString() },
+                            { id: 'p20', name: 'p20', category: 'Bolts', price: 'da', stock: 30, createdAt: new Date().toISOString() },
+                            { id: 'p21', name: 'p21', category: 'Washers', price: 'da', stock: 220, createdAt: new Date().toISOString() }
                         ]
                     },
                     {
@@ -74,14 +74,14 @@ class Database {
                         image: 'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'p22', name: 'p22', category: 'Bolts', price: 35.99, stock: 25, createdAt: new Date().toISOString() },
-                            { id: 'p23', name: 'p23', category: 'Screws', price: 18.75, stock: 65, createdAt: new Date().toISOString() },
-                            { id: 'p24', name: 'p24', category: 'Nuts', price: 14.99, stock: 110, createdAt: new Date().toISOString() },
-                            { id: 'p25', name: 'p25', category: 'Bolts', price: 42.50, stock: 20, createdAt: new Date().toISOString() },
-                            { id: 'p26', name: 'p26', category: 'Screws', price: 12.25, stock: 140, createdAt: new Date().toISOString() },
-                            { id: 'p27', name: 'p27', category: 'Washers', price: 10.50, stock: 175, createdAt: new Date().toISOString() },
-                            { id: 'p28', name: 'p28', category: 'Rods', price: 24.99, stock: 45, createdAt: new Date().toISOString() },
-                            { id: 'p29', name: 'p29', category: 'Nuts', price: 16.75, stock: 80, createdAt: new Date().toISOString() }
+                            { id: 'p22', name: 'p22', category: 'Bolts', price: 'da', stock: 25, createdAt: new Date().toISOString() },
+                            { id: 'p23', name: 'p23', category: 'Screws', price: 'da', stock: 65, createdAt: new Date().toISOString() },
+                            { id: 'p24', name: 'p24', category: 'Nuts', price: 'da', stock: 110, createdAt: new Date().toISOString() },
+                            { id: 'p25', name: 'p25', category: 'Bolts', price: 'da', stock: 20, createdAt: new Date().toISOString() },
+                            { id: 'p26', name: 'p26', category: 'Screws', price: 'da', stock: 140, createdAt: new Date().toISOString() },
+                            { id: 'p27', name: 'p27', category: 'Washers', price: 'da', stock: 175, createdAt: new Date().toISOString() },
+                            { id: 'p28', name: 'p28', category: 'Rods', price: 'da', stock: 45, createdAt: new Date().toISOString() },
+                            { id: 'p29', name: 'p29', category: 'Nuts', price: 'da', stock: 80, createdAt: new Date().toISOString() }
                         ]
                     },
                     {
@@ -90,12 +90,12 @@ class Database {
                         image: 'https://images.pexels.com/photos/1108101/pexels-photo-1108101.jpeg?auto=compress&cs=tinysrgb&w=800',
                         createdAt: new Date().toISOString(),
                         products: [
-                            { id: 'p30', name: 'p30', category: 'Bolts', price: 32.99, stock: 30, createdAt: new Date().toISOString() },
-                            { id: 'p31', name: 'p31', category: 'Screws', price: 19.50, stock: 75, createdAt: new Date().toISOString() },
-                            { id: 'p32', name: 'p32', category: 'Nuts', price: 13.25, stock: 100, createdAt: new Date().toISOString() },
-                            { id: 'p33', name: 'p33', category: 'Bolts', price: 26.75, stock: 40, createdAt: new Date().toISOString() },
-                            { id: 'p34', name: 'p34', category: 'Screws', price: 11.99, stock: 200, createdAt: new Date().toISOString() },
-                            { id: 'p35', name: 'p35', category: 'Washers', price: 8.75, stock: 150, createdAt: new Date().toISOString() }
+                            { id: 'p30', name: 'p30', category: 'Bolts', price: 'da', stock: 30, createdAt: new Date().toISOString() },
+                            { id: 'p31', name: 'p31', category: 'Screws', price: 'da', stock: 75, createdAt: new Date().toISOString() },
+                            { id: 'p32', name: 'p32', category: 'Nuts', price: 'da', stock: 100, createdAt: new Date().toISOString() },
+                            { id: 'p33', name: 'p33', category: 'Bolts', price: 'da', stock: 40, createdAt: new Date().toISOString() },
+                            { id: 'p34', name: 'p34', category: 'Screws', price: 'da', stock: 200, createdAt: new Date().toISOString() },
+                            { id: 'p35', name: 'p35', category: 'Washers', price: 'da', stock: 150, createdAt: new Date().toISOString() }
                         ]
                     }
                 ],

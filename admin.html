@@ -22,7 +22,7 @@
                     <p class="login-subtitle">Company Products Directory</p>
                 </div>
 
-                <form id="loginForm" class="login-form">
+                <form id="loginForm" class="login-form" method="post" action="javascript:void(0)">
                     <div class="form-group">
                         <label for="username" class="form-label">Username</label>
                         <input 
@@ -55,7 +55,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="login-btn">
+                    <button type="button" class="login-btn" onclick="if(window.admin) window.admin.handleLogin(); return false;">
                         <span class="btn-text">Sign In</span>
                         <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>

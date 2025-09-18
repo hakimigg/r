@@ -32,7 +32,9 @@ class StandaloneAdmin {
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 this.handleLogin();
+                return false;
             });
         }
 

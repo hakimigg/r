@@ -185,18 +185,16 @@
                         Ajouter un produit
                     </button>
                 </div>
-                <table class="data-table">
-                    <thead>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th>ID</th>
-                            <th>Nom du produit</th>
-                            <th>Catégorie</th>
-                            <th>Société</th>
-                            <th>Prix</th>
-                            <th>Category</th>
-                            <th>Company</th>
-                            <th>Price</th>
-                            <th>Actions</th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produit</th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catégorie</th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Société</th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix</th>
+                            <th scope="col" class="relative px-4 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody id="productsTableBody">

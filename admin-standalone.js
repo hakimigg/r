@@ -336,28 +336,47 @@ class StandaloneAdmin {
             company.products.forEach(product => {
                 allProducts.push({
                     ...product,
-                    companyName: company.name
+                    companyName: company.name,
+                    companyImage: company.image || 'https://via.placeholder.com/40' // Default image if none provided
                 });
             });
         });
 
         allProducts.forEach(product => {
             const row = document.createElement('tr');
+            row.className = 'hover:bg-gray-50';
             row.innerHTML = `
-                <td>${product.id}</td>
-                <td>${product.name}</td>
-                <td>${product.category}</td>
-                <td>${product.companyName}</td>
-                <td>da</td>
-                <td>
-                    <div class="action-buttons">
-                        <button class="edit-btn" onclick="admin.editProduct('${product.id}')" title="Modifier">
-                            <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <td class="px-4 py-3">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                            <img class="h-10 w-10 rounded-full object-cover" src="${product.companyImage}" alt="${product.companyName} logo">
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">${product.name}</div>
+                            <div class="text-sm text-gray-500">#${product.id}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-4 py-3">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        ${product.category}
+                    </span>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-500">
+                    ${product.companyName}
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-500">
+                    ${product.price || 'da'}
+                </td>
+                <td class="px-4 py-3 text-right text-sm font-medium">
+                    <div class="flex items-center justify-end space-x-2">
+                        <button class="p-1.5 rounded-full text-blue-600 hover:bg-blue-100" onclick="admin.editProduct('${product.id}')" title="Modifier">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </button>
-                        <button class="delete-btn" onclick="admin.deleteProduct('${product.id}')" title="Supprimer">
-                            <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button class="p-1.5 rounded-full text-red-600 hover:bg-red-100" onclick="admin.deleteProduct('${product.id}')" title="Supprimer">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
                         </button>
